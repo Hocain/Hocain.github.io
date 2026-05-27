@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aditya Singh — DevSecOps Engineer</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+/* BASE */
+body{
+  background-color:#0a0a0f;
+  color:#e2e8f0;
+  font-family:'Inter',Arial,sans-serif;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#0a0a0f;}
+::-webkit-scrollbar-thumb{background:#00f5ff;border-radius:2px;}
+
+/* CANVAS */
+#canvas{
+  position:fixed;top:0;left:0;
+  width:100%;height:100%;
+  z-index:0;pointer-events:none;
+  opacity:0.6;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;width:100%;z-index:9999;
+  padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+  background:rgba(10,10,15,0.95);
+  border-bottom:1px solid rgba(0,245,255,0.2);
+}
+.nav-logo{
+  font-family:'Orbitron',monospace;
+  font-size:1.1rem;color:#00f5ff;
+  letter-spacing:2px;text-decoration:none;font-weight:700;
+}
+.nav-logo span{color:#a855f7;}
+.nav-links{display:flex;gap:1.5rem;list-style:none;}
+.nav-links a{
+  color:#94a3b8;text-decoration:none;
+  font-size:0.78rem;letter-spacing:1px;
+  text-transform:uppercase;
+  font-family:'Share Tech Mono',monospace;
+  transition:color 0.3s;
+}
+.nav-links a:hover{color:#00f5ff;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{width:24px;height:2px;background:#00f5ff;border-radius:2px;display:block;}
+
+/* SECTIONS */
+section{
+  position:relative;z-index:1;
+  padding:6rem 2rem;
+}
+.section-inner{max-width:1200px;margin:0 auto;}
+.section-label{
+  font-family:'Share Tech Mono',monospace;
+  color:#00f5ff;font-size:0.78rem;
+  letter-spacing:4px;text-transform:uppercase;
+  margin-bottom:0.5rem;opacity:0.8;
+}
+.section-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(1.6rem,3.5vw,2.5rem);
+  font-weight:700;color:#ffffff;
+  margin-bottom:0.5rem;
+}
+.section-line{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,#00f5ff,transparent);
+  margin-bottom:3rem;
+}
+
+/* FADE ANIMATION */
+.fade-in{opacity:0;transform:translateY(25px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding-top:80px;
+  background-color:#0a0a0f;
+}
+.hero-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:3rem;align-items:center;
+  max-width:1200px;width:100%;
+}
+.hero-tag{
+  font-family:'Share Tech Mono',monospace;
+  color:#00f5ff;font-size:0.82rem;
+  letter-spacing:3px;margin-bottom:1rem;
+}
+.hero-name{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2rem,4.5vw,3.6rem);
+  font-weight:900;color:#ffffff;
+  line-height:1.1;margin-bottom:0.5rem;
+  text-shadow:0 0 30px rgba(0,245,255,0.3);
+}
+.hero-name-accent{color:#00f5ff;}
+.hero-role{
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(0.9rem,1.8vw,1.2rem);
+  color:#00f5ff;
+  margin-bottom:1.5rem;min-height:2rem;
+}
+.cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#00f5ff;margin-left:2px;
+  animation:blink 1s step-end infinite;
+  vertical-align:middle;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-desc{
+  color:#94a3b8;font-size:0.93rem;
+  max-width:520px;margin-bottom:2rem;line-height:1.85;
+}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.72rem 1.7rem;border-radius:5px;
+  font-family:'Share Tech Mono',monospace;font-size:0.82rem;
+  letter-spacing:1px;text-decoration:none;
+  cursor:pointer;transition:all 0.3s;text-transform:uppercase;
+  border:2px solid transparent;
+}
+.btn-primary{background:#00f5ff;color:#000000;border-color:#00f5ff;font-weight:700;}
+.btn-primary:hover{background:transparent;color:#00f5ff;box-shadow:0 0 20px rgba(0,245,255,0.4);}
+.btn-outline{background:transparent;color:#00f5ff;border-color:#00f5ff;}
+.btn-outline:hover{background:rgba(0,245,255,0.1);box-shadow:0 0 20px rgba(0,245,255,0.3);}
+.btn-purple{background:transparent;color:#a855f7;border-color:#a855f7;}
+.btn-purple:hover{background:rgba(168,85,247,0.12);box-shadow:0 0 20px rgba(168,85,247,0.3);}
+
+.hero-stats{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap;}
+.stat-num{
+  font-family:'Orbitron',monospace;font-size:1.8rem;
+  color:#00f5ff;display:block;font-weight:700;
+}
+.stat-label{font-size:0.68rem;color:#64748b;letter-spacing:1px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;}
+
+/* HERO PHOTO — HUD FRAME */
+.hero-photo-wrap{display:flex;justify-content:center;align-items:center;position:relative;}
+
+.hud-frame{
+  position:relative;
+  width:300px;height:300px;
+}
+
+/* The actual photo circle */
+.hud-photo{
+  width:100%;height:100%;
+  border-radius:50%;
+  overflow:hidden;
+  border:2px solid rgba(0,245,255,0.25);
+  box-shadow:
+    0 0 0 4px rgba(0,245,255,0.06),
+    0 0 0 8px rgba(0,245,255,0.03),
+    0 0 40px rgba(0,245,255,0.18),
+    0 0 80px rgba(0,245,255,0.07);
+  animation:photoPulse 3s ease-in-out infinite;
+}
+@keyframes photoPulse{
+  0%,100%{box-shadow:0 0 0 4px rgba(0,245,255,0.06),0 0 0 8px rgba(0,245,255,0.03),0 0 40px rgba(0,245,255,0.18),0 0 80px rgba(0,245,255,0.07);}
+  50%{box-shadow:0 0 0 6px rgba(0,245,255,0.1),0 0 0 12px rgba(0,245,255,0.04),0 0 60px rgba(0,245,255,0.28),0 0 100px rgba(0,245,255,0.12);}
+}
+.hud-photo img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  border-radius:50%;display:block;
+}
+.photo-fallback{
+  width:100%;height:100%;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',monospace;font-size:5rem;
+  color:#00f5ff;background:#0f0f1a;
+}
+
+/* Corner bracket decorations */
+.hud-corners{position:absolute;inset:-14px;pointer-events:none;}
+.hud-corner{
+  position:absolute;width:26px;height:26px;
+}
+.hud-corner::before,.hud-corner::after{
+  content:'';position:absolute;background:#00f5ff;
+  box-shadow:0 0 8px rgba(0,245,255,0.8);
+}
+.hud-corner::before{width:100%;height:2px;top:0;left:0;}
+.hud-corner::after{width:2px;height:100%;top:0;left:0;}
+.hud-corner.tl{top:14px;left:14px;}
+.hud-corner.tr{top:14px;right:14px;transform:scaleX(-1);}
+.hud-corner.bl{bottom:14px;left:14px;transform:scaleY(-1);}
+.hud-corner.br{bottom:14px;right:14px;transform:scale(-1);}
+
+/* Outer dashed orbit ring — subtle, no spin */
+.hud-orbit{
+  position:absolute;inset:-22px;
+  border-radius:50%;
+  border:1px dashed rgba(0,245,255,0.18);
+}
+
+/* Scan line that sweeps across the photo once in a while */
+.hud-scan{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(0,245,255,0.6),transparent);
+  border-radius:1px;
+  animation:scanLine 4s ease-in-out infinite;
+  opacity:0;
+  pointer-events:none;
+  z-index:2;
+}
+@keyframes scanLine{
+  0%{top:10%;opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:1;}
+  100%{top:90%;opacity:0;}
+}
+
+/* Status dot */
+.hud-status{
+  position:absolute;bottom:14px;right:18px;
+  display:flex;align-items:center;gap:6px;
+  background:rgba(10,10,15,0.85);
+  border:1px solid rgba(0,245,255,0.3);
+  border-radius:20px;padding:4px 10px;
+  font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:#00f5ff;
+  backdrop-filter:blur(6px);z-index:3;
+}
+.hud-dot{width:6px;height:6px;border-radius:50%;background:#39ff14;box-shadow:0 0 6px #39ff14;animation:dotBlink 2s ease-in-out infinite;}
+@keyframes dotBlink{0%,100%{opacity:1;box-shadow:0 0 6px #39ff14;}50%{opacity:0.5;box-shadow:0 0 12px #39ff14;}}
+.hero-badge{
+  position:absolute;
+  background:#0f0f1a;border:1px solid #00f5ff;
+  border-radius:6px;padding:0.4rem 0.9rem;
+  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
+  color:#00f5ff;white-space:nowrap;
+  box-shadow:0 0 15px rgba(0,245,255,0.25);
+}
+.hero-badge.b1{top:5%;right:-10px;}
+.hero-badge.b2{bottom:30%;right:-20px;}
+.hero-badge.b3{bottom:5%;left:0;}
+.green-dot{color:#39ff14;font-size:0.5rem;vertical-align:middle;margin-right:4px;}
+.float-icons{position:absolute;inset:0;pointer-events:none;}
+.fi-icon{
+  position:absolute;font-size:1.3rem;
+  color:#00f5ff;opacity:0.15;
+  animation:floatUp 3s ease-in-out infinite;
+}
+.fi-icon:nth-child(1){top:5%;left:2%;}
+.fi-icon:nth-child(2){top:15%;right:2%;color:#a855f7;animation-delay:0.8s;}
+.fi-icon:nth-child(3){bottom:20%;left:2%;animation-delay:1.5s;}
+.fi-icon:nth-child(4){bottom:5%;right:10%;color:#a855f7;animation-delay:2s;}
+@keyframes floatUp{0%,100%{transform:translateY(0);opacity:0.15}50%{transform:translateY(-10px);opacity:0.4}}
+
+/* ═══════════════════════════════
+   ABOUT
+═══════════════════════════════ */
+#about{background-color:#0f0f1a;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;}
+.about-text p{color:#94a3b8;line-height:1.9;margin-bottom:1rem;font-size:0.93rem;}
+.about-text p strong{color:#00f5ff;}
+.about-info{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.5rem;}
+.info-item{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.75rem 1rem;
+  background:#13131f;
+  border:1px solid rgba(0,245,255,0.15);
+  border-radius:6px;
+}
+.info-item i{color:#00f5ff;width:18px;text-align:center;font-size:0.85rem;}
+.info-item span{font-size:0.82rem;color:#94a3b8;font-family:'Share Tech Mono',monospace;}
+.about-cards{display:flex;flex-direction:column;gap:1rem;}
+.about-card{
+  background:#13131f;
+  border:1px solid rgba(0,245,255,0.12);
+  border-left:3px solid #00f5ff;
+  border-radius:8px;padding:1.25rem;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.about-card:hover{box-shadow:0 0 20px rgba(0,245,255,0.1);}
+.about-card h4{
+  font-family:'Orbitron',monospace;font-size:0.72rem;
+  color:#00f5ff;letter-spacing:2px;margin-bottom:0.5rem;
+  text-transform:uppercase;
+}
+.about-card p{font-size:0.83rem;color:#94a3b8;}
+
+/* ═══════════════════════════════
+   SKILLS
+═══════════════════════════════ */
+#skills{background-color:#0a0a0f;}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem;}
+.skill-cat{
+  background:#0f0f1a;
+  border:1px solid rgba(0,245,255,0.12);
+  border-radius:10px;padding:1.4rem;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.skill-cat:hover{border-color:rgba(0,245,255,0.35);box-shadow:0 4px 25px rgba(0,245,255,0.08);}
+.skill-cat-head{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.1rem;}
+.skill-cat-ico{
+  width:34px;height:34px;border-radius:6px;
+  background:rgba(0,245,255,0.08);
+  border:1px solid rgba(0,245,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  color:#00f5ff;font-size:0.85rem;
+}
+.skill-cat-name{font-family:'Orbitron',monospace;font-size:0.7rem;color:#e2e8f0;letter-spacing:1px;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.stag{
+  padding:0.28rem 0.75rem;border-radius:20px;
+  font-family:'Share Tech Mono',monospace;font-size:0.7rem;
+  background:rgba(0,245,255,0.06);
+  border:1px solid rgba(0,245,255,0.2);
+  color:#00f5ff;transition:all 0.3s;cursor:default;
+}
+.stag:hover{background:rgba(0,245,255,0.14);}
+.stag.p{background:rgba(168,85,247,0.07);border-color:rgba(168,85,247,0.28);color:#a855f7;}
+.stag.p:hover{background:rgba(168,85,247,0.15);}
+
+/* ═══════════════════════════════
+   EXPERIENCE
+═══════════════════════════════ */
+#experience{background-color:#0f0f1a;}
+.timeline{position:relative;padding-left:2rem;}
+.timeline::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,#00f5ff,#a855f7,transparent);
+}
+.tl-item{position:relative;margin-bottom:2.5rem;padding-left:2rem;}
+.tl-dot{
+  position:absolute;left:-2.4rem;top:0.4rem;
+  width:14px;height:14px;border-radius:50%;
+  background:#0a0a0f;border:2px solid #00f5ff;
+  box-shadow:0 0 10px #00f5ff;
+  transition:all 0.3s;
+}
+.tl-item:hover .tl-dot{background:#00f5ff;}
+.tl-card{
+  background:#13131f;
+  border:1px solid rgba(0,245,255,0.12);
+  border-radius:10px;padding:1.5rem;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.tl-card:hover{border-color:rgba(0,245,255,0.3);box-shadow:0 4px 25px rgba(0,245,255,0.07);}
+.tl-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;}
+.tl-company{font-family:'Orbitron',monospace;font-size:0.95rem;color:#00f5ff;}
+.tl-role{font-size:0.88rem;color:#94a3b8;margin-bottom:0.2rem;font-style:italic;}
+.tl-period{
+  font-family:'Share Tech Mono',monospace;font-size:0.72rem;
+  padding:0.22rem 0.7rem;border-radius:3px;
+  background:rgba(0,245,255,0.08);
+  border:1px solid rgba(0,245,255,0.2);color:#00f5ff;
+}
+.tl-location{font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:#64748b;margin-top:0.3rem;}
+.tl-list{margin-top:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+.tl-list li{
+  color:#94a3b8;font-size:0.84rem;line-height:1.7;
+  list-style:none;padding-left:1.2rem;position:relative;
+}
+.tl-list li::before{content:'▹';position:absolute;left:0;color:#00f5ff;}
+.tl-chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1rem;}
+.chip{
+  padding:0.2rem 0.65rem;border-radius:3px;
+  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
+  background:rgba(168,85,247,0.08);
+  border:1px solid rgba(168,85,247,0.25);color:#a855f7;
+}
+
+/* ═══════════════════════════════
+   PROJECTS
+═══════════════════════════════ */
+#projects{background-color:#0a0a0f;}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;}
+.proj-card{
+  background:#0f0f1a;
+  border:1px solid rgba(0,245,255,0.12);
+  border-radius:12px;padding:1.5rem;
+  position:relative;overflow:hidden;
+  transition:all 0.3s;
+  display:flex;flex-direction:column;
+}
+.proj-card:hover{
+  border-color:rgba(0,245,255,0.35);
+  box-shadow:0 8px 40px rgba(0,245,255,0.1);
+  transform:translateY(-4px);
+}
+.proj-num{
+  position:absolute;top:1rem;right:1.5rem;
+  font-family:'Orbitron',monospace;font-size:2.2rem;
+  color:rgba(0,245,255,0.04);font-weight:900;
+}
+.badges{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.badge{
+  padding:0.2rem 0.7rem;border-radius:3px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.62rem;letter-spacing:0.5px;text-transform:uppercase;
+}
+.badge-d{background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.3);color:#39ff14;}
+.badge-e{background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.3);color:#00f5ff;}
+.badge-a{background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.3);color:#a855f7;}
+.badge-m{background:rgba(255,152,0,0.08);border:1px solid rgba(255,152,0,0.3);color:#ff9800;}
+.badge-ent{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.3);color:#ffd700;}
+.badge-mon{background:rgba(0,188,212,0.08);border:1px solid rgba(0,188,212,0.3);color:#00bcd4;}
+.proj-title{font-family:'Orbitron',monospace;font-size:0.88rem;color:#ffffff;margin-bottom:0.3rem;line-height:1.3;}
+.proj-date{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#64748b;margin-bottom:1rem;}
+.proj-desc{flex:1;display:flex;flex-direction:column;gap:0.4rem;}
+.proj-desc li{
+  color:#94a3b8;font-size:0.83rem;line-height:1.65;
+  list-style:none;padding-left:1.2rem;position:relative;
+}
+.proj-desc li::before{content:'→';position:absolute;left:0;color:#00f5ff;font-size:0.78rem;}
+.proj-tech{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.2rem;}
+
+/* ═══════════════════════════════
+   FORWARD DEPLOYED
+═══════════════════════════════ */
+#forward-deployed{background-color:#0f0f1a;}
+.fd-intro{color:#94a3b8;font-size:0.93rem;max-width:750px;margin-bottom:2.5rem;line-height:1.85;}
+.fd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.25rem;margin-bottom:2.5rem;}
+.fd-card{
+  background:#13131f;
+  border:1px solid rgba(0,245,255,0.12);
+  border-radius:10px;padding:1.5rem;
+  text-align:center;transition:all 0.3s;
+}
+.fd-card:hover{border-color:rgba(0,245,255,0.35);box-shadow:0 4px 25px rgba(0,245,255,0.1);transform:translateY(-3px);}
+.fd-icon{
+  width:54px;height:54px;border-radius:50%;
+  background:rgba(0,245,255,0.06);
+  border:1px solid rgba(0,245,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;color:#00f5ff;
+  margin:0 auto 1rem;
+}
+.fd-card h4{font-family:'Orbitron',monospace;font-size:0.72rem;color:#e2e8f0;letter-spacing:1px;margin-bottom:0.5rem;text-transform:uppercase;}
+.fd-card p{color:#94a3b8;font-size:0.8rem;line-height:1.65;}
+.pipeline-box{
+  background:#13131f;
+  border:1px solid rgba(0,245,255,0.15);
+  border-radius:10px;padding:1.75rem;
+}
+.pipeline-box h3{
+  font-family:'Orbitron',monospace;font-size:0.78rem;
+  color:#00f5ff;letter-spacing:2px;margin-bottom:1.5rem;
+}
+.pipeline-stages{display:flex;align-items:center;flex-wrap:wrap;gap:0.5rem;}
+.ps{
+  padding:0.5rem 1rem;border-radius:4px;
+  font-family:'Share Tech Mono',monospace;font-size:0.75rem;
+  border:1px solid;display:flex;align-items:center;gap:0.5rem;
+}
+.ps-dot{width:7px;height:7px;border-radius:50%;animation:pulseDot 1.5s infinite;}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:0.25}}
+.ps-lint{background:rgba(0,245,255,0.07);border-color:rgba(0,245,255,0.3);color:#00f5ff;}
+.ps-lint .ps-dot{background:#00f5ff;}
+.ps-test{background:rgba(57,255,20,0.07);border-color:rgba(57,255,20,0.3);color:#39ff14;}
+.ps-test .ps-dot{background:#39ff14;}
+.ps-build{background:rgba(255,152,0,0.07);border-color:rgba(255,152,0,0.3);color:#ff9800;}
+.ps-build .ps-dot{background:#ff9800;}
+.ps-scan{background:rgba(255,51,85,0.07);border-color:rgba(255,51,85,0.3);color:#ff3355;}
+.ps-scan .ps-dot{background:#ff3355;}
+.ps-deploy{background:rgba(168,85,247,0.07);border-color:rgba(168,85,247,0.3);color:#a855f7;}
+.ps-deploy .ps-dot{background:#a855f7;}
+.ps-retrain{background:rgba(0,188,212,0.07);border-color:rgba(0,188,212,0.3);color:#00bcd4;}
+.ps-retrain .ps-dot{background:#00bcd4;}
+.ps-arrow{color:#64748b;font-size:1rem;}
+
+/* ═══════════════════════════════
+   MOBILE APPS
+═══════════════════════════════ */
+#mobile-apps{background-color:#0a0a0f;}
+.app-showcase{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.app-mockup{display:flex;justify-content:center;align-items:center;position:relative;}
+.phone{
+  width:210px;height:400px;
+  border-radius:32px;
+  border:2px solid rgba(0,245,255,0.35);
+  background:#0f0f1a;
+  overflow:hidden;
+  box-shadow:0 0 50px rgba(0,245,255,0.12),inset 0 0 20px rgba(0,245,255,0.02);
+}
+.phone-notch{
+  width:70px;height:18px;background:#0a0a0f;
+  border-radius:0 0 10px 10px;margin:0 auto;
+}
+.phone-body{padding:0.8rem;display:flex;flex-direction:column;gap:0.5rem;}
+.ph-header{
+  background:linear-gradient(135deg,rgba(0,245,255,0.12),rgba(168,85,247,0.12));
+  border-radius:8px;padding:0.8rem;text-align:center;
+}
+.ph-logo{font-family:'Orbitron',monospace;font-size:0.85rem;color:#00f5ff;font-weight:700;}
+.ph-sub{font-size:0.55rem;color:#64748b;font-family:'Share Tech Mono',monospace;}
+.ph-row{display:flex;gap:0.4rem;}
+.ph-card{
+  flex:1;background:rgba(0,245,255,0.04);
+  border:1px solid rgba(0,245,255,0.1);
+  border-radius:5px;padding:0.45rem;text-align:center;
+}
+.ph-val{font-family:'Orbitron',monospace;font-size:0.65rem;color:#00f5ff;}
+.ph-key{font-size:0.5rem;color:#64748b;font-family:'Share Tech Mono',monospace;}
+.ph-esim{
+  background:rgba(57,255,20,0.08);
+  border:1px solid rgba(57,255,20,0.2);
+  border-radius:4px;padding:0.4rem;
+  font-family:'Share Tech Mono',monospace;font-size:0.62rem;
+  color:#39ff14;text-align:center;
+}
+.ph-cov{background:rgba(168,85,247,0.06);border-radius:4px;padding:0.5rem;}
+.ph-cov-label{font-size:0.52rem;color:#64748b;font-family:'Share Tech Mono',monospace;margin-bottom:0.3rem;}
+.ph-row2{display:flex;align-items:center;justify-content:space-between;font-size:0.52rem;color:#64748b;font-family:'Share Tech Mono',monospace;margin-bottom:0.2rem;}
+.ph-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin-bottom:0.4rem;}
+.ph-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#00f5ff,#a855f7);}
+.phone-glow{
+  position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
+  width:120px;height:50px;
+  background:#00f5ff;filter:blur(35px);opacity:0.12;border-radius:50%;
+}
+.app-info h3{font-family:'Orbitron',monospace;font-size:1.4rem;color:#ffffff;margin-bottom:0.4rem;}
+.app-tagline{font-family:'Share Tech Mono',monospace;color:#00f5ff;font-size:0.82rem;margin-bottom:1rem;}
+.app-info p{color:#94a3b8;font-size:0.88rem;line-height:1.8;margin-bottom:1.5rem;}
+.app-feats{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;margin-bottom:1.5rem;}
+.app-feat{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:#94a3b8;}
+.app-feat i{color:#00f5ff;width:14px;font-size:0.75rem;}
+.plat-badges{display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;}
+.plat-b{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.5rem 1.1rem;border-radius:6px;
+  font-family:'Share Tech Mono',monospace;font-size:0.78rem;
+  border:1px solid;transition:all 0.3s;
+}
+.plat-b.android{border-color:rgba(57,255,20,0.3);color:#39ff14;}
+.plat-b.android:hover{background:rgba(57,255,20,0.07);}
+.plat-b.ios{border-color:rgba(0,245,255,0.3);color:#00f5ff;}
+.plat-b.ios:hover{background:rgba(0,245,255,0.07);}
+
+/* ═══════════════════════════════
+   CERTIFICATIONS
+═══════════════════════════════ */
+#certifications{background-color:#0f0f1a;}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.25rem;}
+.cert-card{
+  background:#13131f;
+  border:1px solid rgba(0,245,255,0.12);
+  border-radius:10px;padding:1.4rem;
+  display:flex;align-items:flex-start;gap:1rem;
+  transition:all 0.3s;
+}
+.cert-card:hover{border-color:rgba(0,245,255,0.3);box-shadow:0 4px 20px rgba(0,245,255,0.07);transform:translateY(-2px);}
+.cert-ico{
+  width:42px;height:42px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+}
+.ci-anthropic{background:rgba(255,152,0,0.08);border:1px solid rgba(255,152,0,0.3);color:#ff9800;}
+.ci-devops{background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.3);color:#00f5ff;}
+.ci-test{background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.3);color:#39ff14;}
+.ci-ml{background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.3);color:#a855f7;}
+.cert-title{font-family:'Orbitron',monospace;font-size:0.75rem;color:#e2e8f0;margin-bottom:0.3rem;line-height:1.3;}
+.cert-issuer{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#00f5ff;margin-bottom:0.25rem;}
+.cert-date{font-size:0.68rem;color:#64748b;font-family:'Share Tech Mono',monospace;}
+
+/* ═══════════════════════════════
+   EDUCATION
+═══════════════════════════════ */
+#education{background-color:#0a0a0f;}
+.edu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem;}
+.edu-card{
+  background:#0f0f1a;
+  border:1px solid rgba(0,245,255,0.12);
+  border-left:3px solid #00f5ff;
+  border-radius:10px;padding:1.5rem;
+  transition:all 0.3s;
+}
+.edu-card:hover{box-shadow:0 4px 25px rgba(0,245,255,0.08);}
+.edu-degree{font-family:'Orbitron',monospace;font-size:0.85rem;color:#ffffff;margin-bottom:0.3rem;}
+.edu-school{font-family:'Share Tech Mono',monospace;font-size:0.82rem;color:#00f5ff;margin-bottom:0.6rem;}
+.edu-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.4rem;}
+.edu-period{
+  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
+  padding:0.2rem 0.6rem;
+  background:rgba(0,245,255,0.07);
+  border:1px solid rgba(0,245,255,0.2);border-radius:3px;color:#00f5ff;
+}
+.edu-loc{font-size:0.72rem;color:#64748b;}
+.edu-pts li{
+  font-size:0.8rem;color:#94a3b8;
+  list-style:none;padding-left:1.1rem;
+  position:relative;line-height:1.55;margin-bottom:0.35rem;
+}
+.edu-pts li::before{content:'◆';position:absolute;left:0;color:#00f5ff;font-size:0.42rem;top:0.45rem;}
+.edu-thesis{
+  margin-top:0.75rem;padding:0.6rem;
+  background:rgba(0,245,255,0.04);
+  border-radius:4px;border:1px solid rgba(0,245,255,0.1);
+}
+.edu-thesis strong{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#00f5ff;}
+.edu-thesis p{font-size:0.78rem;color:#94a3b8;}
+
+/* ═══════════════════════════════
+   CONTACT
+═══════════════════════════════ */
+#contact{background-color:#0f0f1a;}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;max-width:600px;}
+.contact-items{display:flex;flex-direction:column;gap:0.75rem;}
+.contact-item{
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem 1.25rem;
+  background:#13131f;
+  border:1px solid rgba(0,245,255,0.12);
+  border-radius:8px;transition:all 0.3s;text-decoration:none;
+  color:#e2e8f0;
+}
+.contact-item:hover{border-color:rgba(0,245,255,0.4);box-shadow:0 0 20px rgba(0,245,255,0.1);transform:translateX(4px);}
+.contact-item-ico{
+  width:38px;height:38px;border-radius:7px;
+  background:rgba(0,245,255,0.07);
+  border:1px solid rgba(0,245,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  color:#00f5ff;flex-shrink:0;font-size:0.9rem;
+}
+.contact-item strong{display:block;font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.15rem;}
+.contact-item span{font-size:0.87rem;color:#e2e8f0;}
+.wa-btn{
+  display:flex;align-items:center;justify-content:center;gap:0.75rem;
+  padding:1rem;
+  background:rgba(37,211,102,0.08);
+  border:1px solid rgba(37,211,102,0.3);
+  border-radius:8px;color:#25d366;
+  font-family:'Share Tech Mono',monospace;font-size:0.87rem;
+  text-decoration:none;transition:all 0.3s;
+}
+.wa-btn:hover{background:rgba(37,211,102,0.15);box-shadow:0 0 20px rgba(37,211,102,0.15);}
+.contact-form-box{
+  background:#13131f;
+  border:1px solid rgba(0,245,255,0.15);
+  border-radius:12px;padding:2rem;
+}
+.contact-form-box h3{
+  font-family:'Orbitron',monospace;font-size:0.82rem;
+  color:#00f5ff;letter-spacing:2px;margin-bottom:1.5rem;
+}
+.fg{margin-bottom:1.1rem;}
+.fg label{
+  display:block;
+  font-family:'Share Tech Mono',monospace;font-size:0.7rem;
+  color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:0.4rem;
+}
+.fg input,.fg textarea{
+  width:100%;
+  background:#0f0f1a;
+  border:1px solid rgba(0,245,255,0.15);
+  border-radius:5px;
+  padding:0.7rem 0.9rem;
+  color:#e2e8f0;
+  font-family:'Share Tech Mono',monospace;font-size:0.82rem;
+  outline:none;transition:border-color 0.3s,box-shadow 0.3s;
+  resize:vertical;
+}
+.fg input:focus,.fg textarea:focus{
+  border-color:#00f5ff;
+  box-shadow:0 0 10px rgba(0,245,255,0.1);
+}
+.fg textarea{min-height:115px;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-status{
+  margin-top:0.75rem;padding:0.7rem;
+  border-radius:5px;font-family:'Share Tech Mono',monospace;font-size:0.78rem;
+  text-align:center;display:none;
+}
+.form-status.ok{background:rgba(57,255,20,0.08);border:1px solid rgba(57,255,20,0.3);color:#39ff14;display:block;}
+.form-status.err{background:rgba(255,51,85,0.08);border:1px solid rgba(255,51,85,0.3);color:#ff3355;display:block;}
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+footer{
+  position:relative;z-index:1;
+  background:#0a0a0f;
+  border-top:1px solid rgba(0,245,255,0.15);
+  padding:2rem;text-align:center;
+}
+.footer-logo{font-family:'Orbitron',monospace;font-size:1.1rem;color:#00f5ff;margin-bottom:0.4rem;font-weight:700;}
+.footer-tag{font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:#64748b;margin-bottom:1.4rem;}
+.footer-socials{display:flex;justify-content:center;gap:0.9rem;margin-bottom:1.4rem;}
+.soc{
+  width:38px;height:38px;border-radius:7px;
+  background:rgba(0,245,255,0.06);
+  border:1px solid rgba(0,245,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  color:#94a3b8;font-size:0.9rem;text-decoration:none;transition:all 0.3s;
+}
+.soc:hover{border-color:#00f5ff;color:#00f5ff;box-shadow:0 0 15px rgba(0,245,255,0.25);}
+.footer-copy{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#64748b;}
+.footer-copy span{color:#00f5ff;}
+
+/* BACK TO TOP */
+#btt{
+  position:fixed;bottom:2rem;right:2rem;
+  width:42px;height:42px;border-radius:7px;
+  background:#0f0f1a;border:1px solid rgba(0,245,255,0.25);
+  display:flex;align-items:center;justify-content:center;
+  color:#00f5ff;font-size:0.9rem;
+  z-index:9998;text-decoration:none;
+  opacity:0;transform:translateY(20px);transition:all 0.3s;
+}
+#btt.show{opacity:1;transform:translateY(0);}
+#btt:hover{border-color:#00f5ff;box-shadow:0 0 15px rgba(0,245,255,0.3);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-inner,.about-grid,.app-showcase,.contact-grid{grid-template-columns:1fr;}
+  .hero-photo-wrap{margin-top:2rem;}
+  .hud-frame{width:220px;height:220px;}
+  .hero-badge.b2,.hero-badge.b3{display:none;}
+  .nav-links{
+    display:none;position:absolute;top:64px;left:0;right:0;
+    background:#0f0f1a;border-bottom:1px solid rgba(0,245,255,0.15);
+    flex-direction:column;padding:1rem 2rem;gap:0.75rem;
+  }
+  .nav-links.open{display:flex;}
+  .hamburger{display:flex;}
+}
+@media(max-width:600px){
+  section{padding:4rem 1rem;}
+  .proj-grid,.fd-grid{grid-template-columns:1fr;}
+  .pipeline-stages{gap:0.3rem;}
+  .ps{padding:0.4rem 0.6rem;font-size:0.65rem;}
+  .fg-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body bgcolor="#0a0a0f">
+
+<!-- PARTICLE CANVAS -->
+<canvas id="canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Aditya<span>.</span>Singh</a>
+  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeNav()">About</a></li>
+    <li><a href="#skills" onclick="closeNav()">Skills</a></li>
+    <li><a href="#experience" onclick="closeNav()">Experience</a></li>
+    <li><a href="#projects" onclick="closeNav()">Projects</a></li>
+    <li><a href="#forward-deployed" onclick="closeNav()">Deployed</a></li>
+    <li><a href="#mobile-apps" onclick="closeNav()">App Dev</a></li>
+    <li><a href="#certifications" onclick="closeNav()">Certs</a></li>
+    <li><a href="#contact" onclick="closeNav()">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-inner">
+    <!-- LEFT: TEXT -->
+    <div class="fade-in">
+      <div class="hero-tag">// DEVSECOPS ENGINEER</div>
+      <h1 class="hero-name">Aditya<br/><span class="hero-name-accent">Singh</span></h1>
+      <div class="hero-role"><span id="typed-text"></span><span class="cursor"></span></div>
+      <p class="hero-desc">Results-driven DevSecOps Engineer specializing in end-to-end CI/CD pipelines, real-time monitoring systems, and hybrid cloud-to-edge deployments. Building AI-powered production systems that self-heal, scale, and secure themselves.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> View Projects</a>
+        <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> Hire Me</a>
+        <a href="mailto:adityasingh70544@gmail.com" class="btn btn-purple"><i class="fas fa-envelope"></i> Email Me</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num" data-target="3">0</span>
+          <span class="stat-label">Production Projects</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-target="16">0</span>
+          <span class="stat-label">AWS Resources</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-target="6">0</span>
+          <span class="stat-label">Pipeline Stages</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-target="30" data-suffix="s">0</span>
+          <span class="stat-label">ML Detection</span>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT: PHOTO -->
+    <div class="hero-photo-wrap fade-in">
+      <div class="float-icons">
+        <i class="fas fa-server fi-icon"></i>
+        <i class="fab fa-docker fi-icon"></i>
+        <i class="fas fa-shield-alt fi-icon"></i>
+        <i class="fas fa-code-branch fi-icon"></i>
+      </div>
+      <div class="hud-frame">
+        <!-- Outer dashed orbit -->
+        <div class="hud-orbit"></div>
+        <!-- Scan line effect -->
+        <div class="hud-scan"></div>
+        <!-- Photo -->
+        <div class="hud-photo">
+          <img src="photo.jpg" alt="Aditya Singh" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <div class="photo-fallback" style="display:none">AS</div>
+        </div>
+        <!-- Corner HUD brackets -->
+        <div class="hud-corners">
+          <div class="hud-corner tl"></div>
+          <div class="hud-corner tr"></div>
+          <div class="hud-corner bl"></div>
+          <div class="hud-corner br"></div>
+        </div>
+        <!-- Online status -->
+        <div class="hud-status"><div class="hud-dot"></div>ONLINE</div>
+      </div>
+      <div class="hero-badge b1"><i class="fas fa-circle green-dot"></i> Available for Work</div>
+      <div class="hero-badge b2"><i class="fab fa-aws"></i> AWS Infra</div>
+      <div class="hero-badge b3"><i class="fas fa-map-marker-alt"></i> Delhi, India</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">// 01. ABOUT</div>
+    <h2 class="section-title">Who I Am</h2>
+    <div class="section-line"></div>
+    <div class="about-grid">
+      <div class="fade-in">
+        <p>I'm <strong>Aditya Singh</strong>, a DevSecOps Engineer based in Delhi, India, currently at <strong>Zuree Telecom Private Limited</strong>. I specialize in bridging cloud infrastructure with edge computing, with security as a first-class citizen in every deployment.</p>
+        <p>My work spans full end-to-end CI/CD pipelines, containerized deployments, AI-powered Kubernetes operators, and real-time observability stacks — all built for production scale.</p>
+        <p>I also build cross-platform apps using <strong>React Native</strong>, creating seamless Android &amp; iOS experiences for telecom and travel solutions.</p>
+        <div class="about-info">
+          <div class="info-item"><i class="fas fa-map-marker-alt"></i><span>Delhi, India</span></div>
+          <div class="info-item"><i class="fas fa-briefcase"></i><span>Zuree Telecom</span></div>
+          <div class="info-item"><i class="fas fa-envelope"></i><span>adityasingh70544@gmail.com</span></div>
+          <div class="info-item"><i class="fas fa-phone"></i><span>+91-8808160056</span></div>
+        </div>
+      </div>
+      <div class="about-cards fade-in">
+        <div class="about-card">
+          <h4>Cloud &amp; Edge</h4>
+          <p>Hybrid AWS-to-edge deployments: Kubernetes on Raspberry Pi 5 (ARM64) connected via Tailscale VPN with full GitOps automation via ArgoCD.</p>
+        </div>
+        <div class="about-card">
+          <h4>Security-First</h4>
+          <p>Trivy, Semgrep, HashiCorp Vault, and SonarQube in every pipeline stage. Security is the foundation — not an afterthought.</p>
+        </div>
+        <div class="about-card">
+          <h4>AI/ML for DevOps</h4>
+          <p>AI-powered platforms using Isolation Forest and Gradient Boosting for anomaly detection, auto-remediation, and MLOps pipelines.</p>
+        </div>
+        <div class="about-card">
+          <h4>App Development</h4>
+          <p>Cross-platform React Native apps for Android &amp; iOS — from global eSIM management to telecom solutions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SKILLS ═══ -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-label">// 02. SKILLS</div>
+    <h2 class="section-title">Tech Arsenal</h2>
+    <div class="section-line"></div>
+    <div class="skills-grid">
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fab fa-aws"></i></div><div class="skill-cat-name">Cloud Platforms</div></div>
+        <div class="skill-tags"><span class="stag">EC2</span><span class="stag">S3</span><span class="stag">RDS</span><span class="stag">IAM</span><span class="stag">VPC</span><span class="stag">ECR</span><span class="stag">AWS</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fas fa-infinity"></i></div><div class="skill-cat-name">CI/CD &amp; Automation</div></div>
+        <div class="skill-tags"><span class="stag">GitLab CI/CD</span><span class="stag">GitHub Actions</span><span class="stag">Jenkins</span><span class="stag">ArgoCD</span><span class="stag">GitOps</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fab fa-docker"></i></div><div class="skill-cat-name">Containers &amp; Orchestration</div></div>
+        <div class="skill-tags"><span class="stag">Docker</span><span class="stag">Kubernetes</span><span class="stag">k3s</span><span class="stag">Multi-arch</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fas fa-layer-group"></i></div><div class="skill-cat-name">Infrastructure as Code</div></div>
+        <div class="skill-tags"><span class="stag">Terraform</span><span class="stag">Ansible</span><span class="stag p">Modular IaC</span><span class="stag p">16+ Resources</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fas fa-chart-line"></i></div><div class="skill-cat-name">Monitoring &amp; Observability</div></div>
+        <div class="skill-tags"><span class="stag">Prometheus</span><span class="stag">Grafana</span><span class="stag">Loki</span><span class="stag">WebSocket</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fas fa-shield-alt"></i></div><div class="skill-cat-name">Security &amp; Scanning</div></div>
+        <div class="skill-tags"><span class="stag">Trivy</span><span class="stag">HashiCorp Vault</span><span class="stag">SonarQube</span><span class="stag">Semgrep</span><span class="stag">SSL/TLS</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fas fa-network-wired"></i></div><div class="skill-cat-name">Networking</div></div>
+        <div class="skill-tags"><span class="stag">Tailscale VPN</span><span class="stag">Nginx</span><span class="stag">SSO/SAML</span><span class="stag">OAuth</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fas fa-brain"></i></div><div class="skill-cat-name">AI/ML &amp; MLOps</div></div>
+        <div class="skill-tags"><span class="stag p">scikit-learn</span><span class="stag p">Isolation Forest</span><span class="stag p">FastAPI</span><span class="stag p">AIOps</span><span class="stag p">RAG Pipelines</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fas fa-microchip"></i></div><div class="skill-cat-name">Edge Computing</div></div>
+        <div class="skill-tags"><span class="stag">Raspberry Pi 5</span><span class="stag">ARM64</span><span class="stag">k3s</span><span class="stag">Multi-arch Builds</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fas fa-code"></i></div><div class="skill-cat-name">Languages &amp; Tools</div></div>
+        <div class="skill-tags"><span class="stag">Python</span><span class="stag">Bash</span><span class="stag">Go</span><span class="stag">JavaScript</span><span class="stag">MySQL</span><span class="stag">Postman</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fab fa-linux"></i></div><div class="skill-cat-name">Operating Systems</div></div>
+        <div class="skill-tags"><span class="stag">Ubuntu Linux</span><span class="stag">Kali Linux</span><span class="stag">Windows Server</span></div>
+      </div>
+      <div class="skill-cat fade-in">
+        <div class="skill-cat-head"><div class="skill-cat-ico"><i class="fas fa-mobile-alt"></i></div><div class="skill-cat-name">App Development</div></div>
+        <div class="skill-tags"><span class="stag">React Native</span><span class="stag">Android</span><span class="stag">iOS</span><span class="stag">REST APIs</span><span class="stag">eSIM</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE ═══ -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">// 03. EXPERIENCE</div>
+    <h2 class="section-title">Work History</h2>
+    <div class="section-line"></div>
+    <div class="timeline">
+      <div class="tl-item fade-in">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div><div class="tl-company">Zuree Telecom Private Limited</div><div class="tl-role">DevOps Engineer</div></div>
+            <div style="text-align:right;"><div class="tl-period">May 2025 &ndash; Present</div><div class="tl-location"><i class="fas fa-map-marker-alt"></i> Gurugram, India</div></div>
+          </div>
+          <ul class="tl-list">
+            <li>Engineered and maintained CI/CD pipelines using GitLab to fully automate build, testing, and deployment of web applications and ML models.</li>
+            <li>Managed and provisioned scalable AWS infrastructure (EC2, VPC, IAM) using Terraform IaC for consistent, highly available environments across multiple projects including EPTW.</li>
+            <li>Containerized applications with Docker, reducing deployment failures and improving release velocity across dev, test, and production.</li>
+            <li>Maintained server security with patches, system updates, database backup/recovery strategies for business continuity.</li>
+          </ul>
+          <div class="tl-chips"><span class="chip">GitLab</span><span class="chip">GitHub</span><span class="chip">Docker</span><span class="chip">Terraform</span><span class="chip">AWS</span><span class="chip">Postman</span><span class="chip">SQL</span><span class="chip">Linux</span><span class="chip">Prometheus</span></div>
+        </div>
+      </div>
+      <div class="tl-item fade-in">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-header">
+            <div><div class="tl-company">QSpiders</div><div class="tl-role">Trainee &mdash; Software Testing</div></div>
+            <div style="text-align:right;"><div class="tl-period">March 2025 &ndash; May 2025</div><div class="tl-location"><i class="fas fa-map-marker-alt"></i> Noida, UP, India</div></div>
+          </div>
+          <ul class="tl-list">
+            <li>Gained comprehensive knowledge of SDLC and STLC with hands-on application to real testing scenarios.</li>
+            <li>Trained in Agile Scrum methodology, participating in Sprint Planning and other key ceremonies.</li>
+            <li>Proficient in manual and automated API testing using Postman — JSON validation and JavaScript test scripts.</li>
+            <li>Obtained foundational understanding of Core Java applicable to testing frameworks.</li>
+          </ul>
+          <div class="tl-chips"><span class="chip">Postman</span><span class="chip">Agile/Scrum</span><span class="chip">Core Java</span><span class="chip">API Testing</span><span class="chip">SDLC/STLC</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECTS ═══ -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">// 04. PROJECTS</div>
+    <h2 class="section-title">Production Systems</h2>
+    <div class="section-line"></div>
+    <div class="proj-grid">
+      <div class="proj-card fade-in">
+        <div class="proj-num">01</div>
+        <div class="badges">
+          <span class="badge badge-d"><i class="fas fa-rocket"></i> Commercially Deployed</span>
+          <span class="badge badge-ent"><i class="fas fa-building"></i> Global Enterprise Client</span>
+          <span class="badge badge-mon"><i class="fas fa-chart-line"></i> Live Monitored</span>
+        </div>
+        <h3 class="proj-title">SSO-Enabled Electronic Permit to Work (EPTW) &amp; Operations Management System</h3>
+        <div class="proj-date"><i class="fas fa-calendar-alt"></i> October 2025 &nbsp;&bull;&nbsp; <span style="color:#00bcd4;">Client: Global E-commerce Enterprise</span></div>
+        <ul class="proj-desc">
+          <li>Designed and deployed end-to-end CI/CD pipelines (GitLab) with Docker containerization — fully automating build, test, and staging-to-production deployments.</li>
+          <li>Implemented Single Sign-On (SSO) using SAML/OAuth 2.0 for centralized identity management and secure platform-wide access across thousands of users.</li>
+          <li>Built secure REST APIs for operational analytics, digital work permit workflows, digital signature validation, and real-time status tracking.</li>
+          <li>Set up complete server infrastructure: Nginx reverse proxy, SSL/TLS certificate automation, environment configuration, and automated backup strategies.</li>
+          <li>Actively monitoring production system using Prometheus — tracking uptime, API response times, error rates, and alert thresholds in real time.</li>
+        </ul>
+        <div class="proj-tech"><span class="chip">MySQL</span><span class="chip">JWT</span><span class="chip">SAML/OAuth (SSO)</span><span class="chip">Docker</span><span class="chip">Nginx</span><span class="chip">GitLab CI/CD</span><span class="chip">SSL/TLS</span><span class="chip">Prometheus</span><span class="chip">Linux Server</span><span class="chip">Postman</span></div>
+      </div>
+      <div class="proj-card fade-in">
+        <div class="proj-num">02</div>
+        <div class="badges"><span class="badge badge-d"><i class="fas fa-rocket"></i> Commercially Deployed</span><span class="badge badge-e"><i class="fas fa-microchip"></i> Edge Computing</span></div>
+        <h3 class="proj-title">Hybrid Edge-Cloud DevSecOps Pipeline</h3>
+        <div class="proj-date"><i class="fas fa-calendar-alt"></i> February 2026</div>
+        <ul class="proj-desc">
+          <li>DevSecOps CI/CD pipeline bridging AWS cloud with Raspberry Pi 5 running k3s on ARM64.</li>
+          <li>6-stage GitLab pipeline (Lint→Test→Build→Scan→Deploy) with multi-arch Docker builds and Trivy scanning.</li>
+          <li>ArgoCD for GitOps-based automated deployments to remote k3s cluster via Tailscale VPN.</li>
+          <li>Provisioned 16 AWS resources using modular Terraform with fully reproducible infrastructure.</li>
+        </ul>
+        <div class="proj-tech"><span class="chip">Terraform</span><span class="chip">GitLab CI/CD</span><span class="chip">Docker</span><span class="chip">k3s</span><span class="chip">AWS</span><span class="chip">ArgoCD</span><span class="chip">Trivy</span><span class="chip">Vault</span><span class="chip">Tailscale</span></div>
+      </div>
+      <div class="proj-card fade-in">
+        <div class="proj-num">03</div>
+        <div class="badges"><span class="badge badge-d"><i class="fas fa-rocket"></i> Commercially Deployed</span><span class="badge badge-a"><i class="fas fa-brain"></i> AI-Powered</span></div>
+        <h3 class="proj-title">KubeHealer &mdash; AI-Powered Self-Healing Kubernetes Platform</h3>
+        <div class="proj-date"><i class="fas fa-calendar-alt"></i> March 2026</div>
+        <ul class="proj-desc">
+          <li>AI self-healing Kubernetes on AWS EC2 using Isolation Forest + Gradient Boosting — zero human intervention.</li>
+          <li>Custom Python Kubernetes Operator: pod restarts, dynamic scaling, rolling restarts, version rollbacks.</li>
+          <li>Chaos testing — ML detects anomalies within 30 seconds and triggers automated recovery.</li>
+          <li>Full observability: Prometheus + Grafana + Loki with real-time detection→action→recovery dashboards.</li>
+        </ul>
+        <div class="proj-tech"><span class="chip">k3s</span><span class="chip">AWS EC2</span><span class="chip">Prometheus</span><span class="chip">Grafana</span><span class="chip">FastAPI</span><span class="chip">scikit-learn</span><span class="chip">ArgoCD</span><span class="chip">Trivy</span><span class="chip">Semgrep</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FORWARD DEPLOYED ═══ -->
+<section id="forward-deployed">
+  <div class="section-inner">
+    <div class="section-label">// 05. FORWARD DEPLOYED</div>
+    <h2 class="section-title">Production Deployments</h2>
+    <div class="section-line"></div>
+    <p class="fd-intro fade-in">I don't just build infrastructure — I deploy it. Every system I architect runs in real production environments, serving live users and handling real business operations. This is what "Forward Deployed" means: code that ships, infrastructure that scales, and systems that self-heal.</p>
+    <div class="fd-grid">
+      <div class="fd-card fade-in"><div class="fd-icon"><i class="fas fa-server"></i></div><h4>Live Production</h4><p>All three projects commercially deployed on production servers handling live traffic and real business operations.</p></div>
+      <div class="fd-card fade-in"><div class="fd-icon"><i class="fas fa-microchip"></i></div><h4>Cloud + Edge Hybrid</h4><p>AWS cloud bridged to Raspberry Pi 5 edge clusters via Tailscale VPN — true hybrid deployments at scale.</p></div>
+      <div class="fd-card fade-in"><div class="fd-icon"><i class="fas fa-shield-alt"></i></div><h4>Security-First</h4><p>Trivy, Semgrep, Vault, and SonarQube integrated into every pipeline. No code ships without security gates.</p></div>
+      <div class="fd-card fade-in"><div class="fd-icon"><i class="fas fa-sync-alt"></i></div><h4>Self-Healing</h4><p>AI/ML-powered Kubernetes operators that detect and remediate failures within 30 seconds — fully autonomous.</p></div>
+      <div class="fd-card fade-in"><div class="fd-icon"><i class="fas fa-eye"></i></div><h4>Full Observability</h4><p>Prometheus + Grafana + Loki stacks with real-time dashboards, alerting, and incident lifecycle tracking.</p></div>
+      <div class="fd-card fade-in"><div class="fd-icon"><i class="fas fa-code-branch"></i></div><h4>GitOps Driven</h4><p>ArgoCD-managed deployments with audit trails, rollback capability, and declarative infrastructure state.</p></div>
+    </div>
+    <div class="pipeline-box fade-in">
+      <h3>// PRODUCTION PIPELINE — 6-STAGE DEVSECOPS</h3>
+      <div class="pipeline-stages">
+        <div class="ps ps-lint"><div class="ps-dot"></div>LINT</div>
+        <div class="ps-arrow">&#8594;</div>
+        <div class="ps ps-test"><div class="ps-dot"></div>TEST</div>
+        <div class="ps-arrow">&#8594;</div>
+        <div class="ps ps-build"><div class="ps-dot"></div>BUILD</div>
+        <div class="ps-arrow">&#8594;</div>
+        <div class="ps ps-scan"><div class="ps-dot"></div>SEC SCAN</div>
+        <div class="ps-arrow">&#8594;</div>
+        <div class="ps ps-deploy"><div class="ps-dot"></div>DEPLOY</div>
+        <div class="ps-arrow">&#8594;</div>
+        <div class="ps ps-retrain"><div class="ps-dot"></div>ML RETRAIN</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MOBILE APPS ═══ -->
+<section id="mobile-apps">
+  <div class="section-inner">
+    <div class="section-label">// 06. APP DEVELOPMENT</div>
+    <h2 class="section-title">Android &amp; iOS Development</h2>
+    <div class="section-line"></div>
+    <div class="app-showcase">
+      <div class="app-mockup fade-in">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-body">
+            <div class="ph-header"><div class="ph-logo">eSIM App</div><div class="ph-sub">GLOBAL eSIM PLATFORM</div></div>
+            <div class="ph-row">
+              <div class="ph-card"><div class="ph-val">190+</div><div class="ph-key">Countries</div></div>
+              <div class="ph-card"><div class="ph-val">4G/5G</div><div class="ph-key">Network</div></div>
+              <div class="ph-card"><div class="ph-val">Instant</div><div class="ph-key">Activation</div></div>
+            </div>
+            <div class="ph-esim">&#10003; eSIM ACTIVE &mdash; INDIA 5G</div>
+            <div class="ph-cov">
+              <div class="ph-cov-label">DATA COVERAGE</div>
+              <div class="ph-row2"><span>Europe</span><span>Unlimited</span></div><div class="ph-bar"><div class="ph-fill" style="width:90%"></div></div>
+              <div class="ph-row2"><span>Asia</span><span>10GB</span></div><div class="ph-bar"><div class="ph-fill" style="width:65%"></div></div>
+              <div class="ph-row2"><span>Americas</span><span>5GB</span></div><div class="ph-bar"><div class="ph-fill" style="width:40%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-glow"></div>
+      </div>
+      <div class="app-info fade-in">
+        <h3>Global eSIM Travel App</h3>
+        <div class="app-tagline">// CONFIDENTIAL — LEADING TELECOM PROVIDER</div>
+        <div style="display:inline-flex;align-items:center;gap:0.5rem;margin-bottom:1rem;padding:0.3rem 0.8rem;background:rgba(255,152,0,0.07);border:1px solid rgba(255,152,0,0.25);border-radius:4px;">
+          <i class="fas fa-building" style="color:#ff9800;font-size:0.75rem;"></i>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#ff9800;">Built for: Leading Telecom Provider &nbsp;&bull;&nbsp; React Native</span>
+        </div>
+        <p>A full-featured cross-platform application enabling travelers to browse, purchase, activate, and manage eSIM data plans across 190+ countries — built for a leading telecom company. Delivers seamless 4G/5G connectivity without physical SIM card swaps.</p>
+        <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:1.5rem;">Handled full DevOps lifecycle for the app's backend API — CI/CD pipelines, containerized deployments, and API monitoring with Postman test suites to ensure 99.9% uptime.</p>
+        <div class="app-feats">
+          <div class="app-feat"><i class="fas fa-sim-card"></i> eSIM Activation</div>
+          <div class="app-feat"><i class="fas fa-globe"></i> 190+ Countries</div>
+          <div class="app-feat"><i class="fas fa-chart-bar"></i> Data Tracking</div>
+          <div class="app-feat"><i class="fas fa-bolt"></i> Instant Provisioning</div>
+          <div class="app-feat"><i class="fas fa-lock"></i> Secure Payments</div>
+          <div class="app-feat"><i class="fas fa-wifi"></i> 4G/5G Support</div>
+          <div class="app-feat"><i class="fas fa-bell"></i> Usage Alerts</div>
+          <div class="app-feat"><i class="fas fa-server"></i> CI/CD Managed</div>
+        </div>
+        <div class="plat-badges">
+          <div class="plat-b android"><i class="fab fa-android"></i> Android</div>
+          <div class="plat-b ios"><i class="fab fa-apple"></i> iOS</div>
+          <span class="badge badge-d" style="align-self:center;"><i class="fas fa-rocket"></i> Live</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CERTIFICATIONS ═══ -->
+<section id="certifications">
+  <div class="section-inner">
+    <div class="section-label">// 07. ACHIEVEMENTS</div>
+    <h2 class="section-title">Certifications</h2>
+    <div class="section-line"></div>
+    <div class="cert-grid">
+      <div class="cert-card fade-in">
+        <div class="cert-ico ci-anthropic"><i class="fas fa-robot"></i></div>
+        <div><div class="cert-title">Model Context Protocol — Advanced Topics</div><div class="cert-issuer">Anthropic</div><div class="cert-date"><i class="fas fa-calendar-alt"></i> March 2026</div></div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-ico ci-anthropic"><i class="fas fa-network-wired"></i></div>
+        <div><div class="cert-title">Introduction to Model Context Protocol</div><div class="cert-issuer">Anthropic</div><div class="cert-date"><i class="fas fa-calendar-alt"></i> March 2026</div></div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-ico ci-ml"><i class="fas fa-brain"></i></div>
+        <div><div class="cert-title">AI Engineer MLOps Track Completion</div><div class="cert-issuer">Industry Program</div><div class="cert-date">GenAI &middot; LLM &middot; RAG &middot; MLOps &middot; AWS</div></div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-ico ci-devops"><i class="fas fa-infinity"></i></div>
+        <div><div class="cert-title">DevOps Course Completion</div><div class="cert-issuer">Industry Certification</div><div class="cert-date">CI/CD &middot; IaC &middot; Automation</div></div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-ico ci-test"><i class="fas fa-vial"></i></div>
+        <div><div class="cert-title">Certification in Software Testing</div><div class="cert-issuer">QSpiders</div><div class="cert-date">Manual &middot; API &middot; Agile Testing</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EDUCATION ═══ -->
+<section id="education">
+  <div class="section-inner">
+    <div class="section-label">// 08. EDUCATION</div>
+    <h2 class="section-title">Academic Background</h2>
+    <div class="section-line"></div>
+    <div class="edu-grid">
+      <div class="edu-card fade-in">
+        <div class="edu-degree">Bachelor of Technology &mdash; Computer Science</div>
+        <div class="edu-school">BBDITM</div>
+        <div class="edu-meta"><span class="edu-period">2021 &ndash; 2025</span><span class="edu-loc"><i class="fas fa-map-marker-alt"></i> Lucknow, UP, India</span></div>
+        <ul class="edu-pts">
+          <li>Core CS: OS, CN, Software Engineering applied to DevOps, cloud, and IoT.</li>
+          <li>Completed CI/CD, Docker, Kubernetes, cloud deployment, and infrastructure automation projects.</li>
+          <li>Machine Learning, Deep Learning, and Generative AI with real-time data processing.</li>
+          <li>Proficiency in Python, Bash, Git, Jenkins, Ansible, and Agile workflows.</li>
+        </ul>
+        <div class="edu-thesis"><strong>Thesis:</strong> <p>Driver Vigilance Monitoring System</p></div>
+      </div>
+      <div class="edu-card fade-in">
+        <div class="edu-degree">Higher Secondary Certificate</div>
+        <div class="edu-school">Sobhawati S S S I C</div>
+        <div class="edu-meta"><span class="edu-period">2019 &ndash; 2021</span><span class="edu-loc"><i class="fas fa-map-marker-alt"></i> Sultanpur, UP, India</span></div>
+        <ul class="edu-pts">
+          <li>Completed Higher Secondary education with focus on Science and Mathematics.</li>
+          <li>Foundation in analytical thinking and problem-solving that drives engineering approach today.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">// 09. CONTACT</div>
+    <h2 class="section-title">Get In Touch</h2>
+    <div class="section-line"></div>
+    <div class="contact-grid">
+      <div class="fade-in">
+        <div class="contact-items">
+          <a class="contact-item" href="mailto:adityasingh70544@gmail.com">
+            <div class="contact-item-ico"><i class="fas fa-envelope"></i></div>
+            <div><strong>Email</strong><span>adityasingh70544@gmail.com</span></div>
+          </a>
+          <a class="contact-item" href="tel:+918808160056">
+            <div class="contact-item-ico"><i class="fas fa-phone"></i></div>
+            <div><strong>Phone</strong><span>+91-8808160056</span></div>
+          </a>
+          <div class="contact-item" style="cursor:default;">
+            <div class="contact-item-ico"><i class="fas fa-map-marker-alt"></i></div>
+            <div><strong>Location</strong><span>Delhi, India</span></div>
+          </div>
+          <!-- UPDATE THESE WITH YOUR REAL PROFILE URLS -->
+          <a class="contact-item" href="https://github.com/Hocain" target="_blank">
+            <div class="contact-item-ico"><i class="fab fa-github"></i></div>
+            <div><strong>GitHub</strong><span>github.com/Hocain</span></div>
+          </a>
+          <a class="contact-item" href="https://www.linkedin.com/in/aditya-singh-460278278" target="_blank">
+            <div class="contact-item-ico"><i class="fab fa-linkedin"></i></div>
+            <div><strong>LinkedIn</strong><span>linkedin.com/in/aditya-singh-460278278</span></div>
+          </a>
+          <a class="wa-btn" href="https://wa.me/918808160056" target="_blank">
+            <i class="fab fa-whatsapp" style="font-size:1.4rem;"></i>
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Aditya<span style="color:#a855f7;">.</span>Singh</div>
+  <div class="footer-tag">// BUILDING THE INFRASTRUCTURE OF TOMORROW</div>
+  <div class="footer-socials">
+    <a class="soc" href="https://github.com/Hocain" target="_blank"><i class="fab fa-github"></i></a>
+    <a class="soc" href="https://www.linkedin.com/in/aditya-singh-460278278" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a class="soc" href="mailto:adityasingh70544@gmail.com"><i class="fas fa-envelope"></i></a>
+    <a class="soc" href="https://wa.me/918808160056" target="_blank"><i class="fab fa-whatsapp"></i></a>
+  </div>
+  <div class="footer-copy">&copy; 2026 <span>Aditya Singh</span> &mdash; DevSecOps Engineer</div>
+</footer>
+
+<!-- BACK TO TOP -->
+<a href="#hero" id="btt"><i class="fas fa-chevron-up"></i></a>
+
+<script>
+// ═══ PARTICLE CANVAS ═══
+(function(){
+  var canvas=document.getElementById('canvas');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W,H,pts=[];
+  function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  function rand(a,b){return Math.random()*(b-a)+a;}
+  for(var i=0;i<100;i++){
+    pts.push({x:rand(0,1)*W||rand(0,800),y:rand(0,1)*H||rand(0,600),
+      vx:rand(-0.3,0.3),vy:rand(-0.3,0.3),
+      r:rand(0.5,1.5),a:rand(0.1,0.5),
+      c:Math.random()>0.5?'0,245,255':'168,85,247'});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i];
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba('+p.c+','+p.a+')';ctx.fill();
+    }
+    for(var i=0;i<pts.length;i++){
+      for(var j=i+1;j<pts.length;j++){
+        var dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y;
+        var d=Math.sqrt(dx*dx+dy*dy);
+        if(d<100){
+          ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+          ctx.strokeStyle='rgba(0,245,255,'+(0.07*(1-d/100))+')';ctx.lineWidth=0.5;ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ═══ TYPED TEXT ═══
+(function(){
+  var roles=['DevSecOps Engineer','Cloud Architect','Kubernetes Engineer','Edge Computing Specialist','MLOps Practitioner','React Native Developer'];
+  var ri=0,ci=0,del=false;
+  var el=document.getElementById('typed-text');
+  if(!el)return;
+  function tick(){
+    var r=roles[ri];
+    if(!del){
+      ci++;el.textContent=r.slice(0,ci);
+      if(ci===r.length){del=true;setTimeout(tick,1800);return;}
+    } else {
+      ci--;el.textContent=r.slice(0,ci);
+      if(ci===0){del=false;ri=(ri+1)%roles.length;}
+    }
+    setTimeout(tick,del?45:95);
+  }
+  tick();
+})();
+
+// ═══ SCROLL FADE + COUNTER ═══
+function animateNum(el){
+  var target=parseInt(el.getAttribute('data-target')||0,10);
+  var suffix=el.getAttribute('data-suffix')||'';
+  var cur=0,step=target/50;
+  var iv=setInterval(function(){
+    cur=Math.min(cur+step,target);
+    el.textContent=Math.round(cur)+suffix;
+    if(cur>=target)clearInterval(iv);
+  },20);
+}
+var observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      var nums=e.target.querySelectorAll('.stat-num');
+      nums.forEach(function(n){animateNum(n);});
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(function(el){observer.observe(el);});
+
+// ═══ BACK TO TOP ═══
+var btt=document.getElementById('btt');
+window.addEventListener('scroll',function(){
+  if(btt)btt.classList.toggle('show',window.scrollY>300);
+});
+
+// ═══ HAMBURGER ═══
+function toggleNav(){
+  var nl=document.getElementById('navLinks');
+  if(nl)nl.classList.toggle('open');
+}
+function closeNav(){
+  var nl=document.getElementById('navLinks');
+  if(nl)nl.classList.remove('open');
+}
+
+// ═══ CONTACT FORM ═══
+function sendMsg(){
+  var n=document.getElementById('fn').value;
+  var e=document.getElementById('fe').value;
+  var s=document.getElementById('fs').value;
+  var m=document.getElementById('fm').value;
+  var st=document.getElementById('fstat');
+  if(!n||!e||!m){st.className='form-status err';st.textContent='Please fill in all required fields.';return;}
+  window.location.href='mailto:adityasingh70544@gmail.com?subject='+encodeURIComponent(s||'Portfolio Inquiry')+'&body='+encodeURIComponent('Name: '+n+'\nEmail: '+e+'\n\n'+m);
+  st.className='form-status ok';st.textContent='Opening your email client...';
+}
+</script>
+</body>
+</html>
